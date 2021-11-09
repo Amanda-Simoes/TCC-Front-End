@@ -1,23 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [result, setResult] = useState([]);
+
+  useEffect(() => {
+    const getResult = async () => {
+      try {
+        const reqResult = await axios.post(
+          "http://localhost:3000/app/escolas",
+          {
+            uf: "PB",
+            fund_ai: "Sim",
+            fund_af: "Não",
+            // dependencia: "Estadual",
+            // localizacao: "Rural",
+            // auditorio: "Sim",
+          }
+        );
+        console.log(reqResult);
+        setResult(reqResult.data);
+      } catch (err) {
+        setResult(err.response.data);
+        console.log(err.response);
+      }
+    };
+    getResult();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {typeof result === "string"
+        ? result
+        : result.map((element) => <div>{element.nome_escola}</div>)}
     </div>
   );
 }
