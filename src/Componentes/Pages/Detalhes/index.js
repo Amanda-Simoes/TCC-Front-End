@@ -7,14 +7,19 @@ function Details() {
   console.log(id);
 
   const [result, setResult] = useState([]);
+  const [notas, setNotas] = useState([]);
 
   useEffect(() => {
     const infoEscola = async () => {
       const url = "http://localhost:3000/app/detalhe-escolas/" + id;
+      const notas = "http://localhost:3000/app/nota-escola/" + id;
       try {
         const reqResult = await axios.post(url, id);
+        const reqNotas = await axios.post(notas, id);
         console.log(reqResult);
+        console.log(setNotas);
         setResult(reqResult.data);
+        setNotas(reqNotas.data);
       } catch (err) {
         setResult(err.response.data);
         console.log(err.response);
@@ -27,7 +32,8 @@ function Details() {
     <div>
       {typeof result === "string"
         ? result
-        : result.map((element) => <div>{element.nome_escola}</div>)}
+        : result.map((element) => <div>{element.nome_escola}</div>
+      )}
 
       {result.map((element) => 
         <div>
@@ -36,7 +42,20 @@ function Details() {
           <h5>Dependência: {element.dependencia}</h5>
           <h5>Localização: {element.localizacao === "1" ? "Urbana" : "Rural"}</h5>
           <h5>Endereço: {element.endereco}</h5>
-        </div>)}
+        </div>
+        )}
+
+        <h4>Notas</h4>
+
+        {notas.map((element) => 
+        <div>
+          <h5>Ano do Saeb: {element.id_saeb}</h5>
+          <h5>5º ano de Lingua Portuguesa: {element.pt_5ano}</h5>
+          <h5>5º ano de Matemática: {element.mt_5ano}</h5>
+          <h5>9º ano de Lingua Portuguesa: {element.pt_9ano}</h5>
+          <h5>9º ano de Matemática: {element.mt_9ano}</h5>
+        </div>
+        )}
 
         {result.map((element) =>
         <div>
@@ -71,6 +90,7 @@ function Details() {
           <h5>Possui grêmio estudantil? {element.gremio_estudantil === "1" ? "Sim" : "Não"}</h5>
           <h5>Possui atendimento educacional especializado (aee)? {element.aee === "1" ? "Sim" : "Não"}</h5>
         </div>)}
+
     </div>
   );
 }
