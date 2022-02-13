@@ -2,27 +2,33 @@ import axios from "axios";
 import { useState } from "react";
 
 function Comparacao() {
-  const [result, setResult] = useState([]);
+  const [result1, setResult1] = useState("");
+  const [result2, setResult2] = useState("");
   const [escola1, setEscola1] = useState("");
   const [escola2, setEscola2] = useState("");
 
   const enviar = async (e) => {
     e.preventDefault();
-    if (escola1 === "" || escola2 === ""){
-      console.log(escola1)
-      console.log(escola2)
-      alert("Informe duas escolas")
-    }
-    else{
+    if (escola1 === "" || escola2 === "") {
+      alert("Informe duas escolas");
+    } else {
       try {
-        const reqResult = await axios.post("http://localhost:3000/app/comparacao", {
-          escola1: escola1,
-          escola2: escola2
-        });
-        console.log(reqResult);
-        setResult(reqResult.data);
+        const reqResultEscola1 = await axios.post(
+          "http://localhost:3000/app/comparacao",
+          {
+            escola: escola1,
+          }
+        );
+        setResult1(reqResultEscola1);
+
+        const reqResultEscola2 = await axios.post(
+          "http://localhost:3000/app/comparacao",
+          {
+            escola: escola2,
+          }
+        );
+        setResult2(reqResultEscola2);
       } catch (err) {
-        setResult(err.response.data);
         console.log(err.response);
       }
     }
@@ -30,33 +36,97 @@ function Comparacao() {
 
   return (
     <div>
-      <h3>Escolas</h3>
+      <h3 class="titulo">Escolas</h3>
 
-      <form onSubmit={enviar}>
-        <input
-          type="text"
-          value={escola1}
-          onChange={(e) => setEscola1(e.target.value)}
-        />
-        <input
-          type="text"
-          value={escola2}
-          onChange={(e) => setEscola2(e.target.value)}
-        />
-        <button type="submit">Enviar</button>
-      </form>
+      <div class="form">
+        <form onSubmit={enviar}>
+          <input
+            type="text"
+            value={escola1}
+            onChange={(e) => setEscola1(e.target.value)}
+          />
+          <input
+            type="text"
+            value={escola2}
+            onChange={(e) => setEscola2(e.target.value)}
+          />
+          <button type="submit">Enviar</button>
+        </form>
+      </div>
 
-      {result.map((element) => 
-        <div>
-          <div>Escola: {element.nome_escola}</div>
-          <div>Endereço: {element.endereco === null ? "Endereço não encontrado" : element.endereco}</div>
-          <h5>Ano do Saeb: {element.id_saeb}</h5>
-          <h5>5º ano de Lingua Portuguesa: {element.pt_5ano}</h5>
-          <h5>5º ano de Matemática: {element.mt_5ano}</h5>
-          <h5>9º ano de Lingua Portuguesa: {element.pt_9ano}</h5>
-          <h5>9º ano de Matemática: {element.mt_9ano}</h5>
-          <br />
-        </div>)}
+      <div>
+        {result1 !== "" ? (
+          <div>
+            <h4>{result1.data.escola[0].nome_escola}</h4>
+            <h5>{result1.data.escola[0].uf}</h5>
+            <h5>{result1.data.escola[0].municipio}</h5>
+            <h5>{result1.data.escola[0].endereco}</h5>
+            <h5>{result1.data.escola[0].funcionamento}</h5>
+            <h5>
+              {result1.data.escola[0].localizacao === 1 ? "Urbana" : "Rural"}
+            </h5>
+            <h5>
+              {result1.data.escola[0].fund_ai === 1
+                ? "Ensino Fundamental 1"
+                : "Não possui Ensino Fundamental 1"}
+            </h5>
+            <h5>
+              {result1.data.escola[0].fund_af === 1
+                ? "Ensino Fundamental 2"
+                : "Não possui Ensino Fundamental 2"}
+            </h5>
+            <h4>Notas</h4>Matemática
+            {result1.data.notas.map((element) => (
+              <div>
+                <h5>Ano do Saeb: {element.id_saeb}</h5>
+                <h5>Nota de Português 5º ano:{element.pt_5ano}</h5>
+                <h5>Nota de Matemática 5º ano:{element.pt_9ano}</h5>
+                <h5>Nota de Português 9º ano:{element.mt_5ano}</h5>
+                <h5>Nota de Matemática 9º ano:{element.mt_9ano}</h5>
+              </div>
+            ))}
+          </div>
+        ) : (
+          ""
+        )}
+      </div>
+
+      <div>
+        {result2 !== "" ? (
+          <div>
+            <h4>{result2.data.escola[0].nome_escola}</h4>
+            <h5>{result2.data.escola[0].uf}</h5>
+            <h5>{result2.data.escola[0].municipio}</h5>
+            <h5>{result2.data.escola[0].endereco}</h5>
+            <h5>{result2.data.escola[0].funcionamento}</h5>
+            <h5>
+              {result2.data.escola[0].localizacao === 1 ? "Urbana" : "Rural"}
+            </h5>
+            <h5>
+              {result2.data.escola[0].fund_ai === 1
+                ? "Ensino Fundamental 1"
+                : "Não possui Ensino Fundamental 1"}
+            </h5>
+            <h5>
+              {result2.data.escola[0].fund_af === 1
+                ? "Ensino Fundamental 2"
+                : "Não possui Ensino Fundamental 2"}
+            </h5>
+            <h4>Notas</h4>Matemática
+            {result2.data.notas.map((element) => (
+              <div>
+                <h5>Ano do Saeb: {element.id_saeb}</h5>
+                <h5>Nota de Português 5º ano:{element.pt_5ano}</h5>
+                <h5>Nota de Matemática 5º ano:{element.pt_9ano}</h5>
+                <h5>Nota de Português 9º ano:{element.mt_5ano}</h5>
+                <h5>Nota de Matemática 9º ano:{element.mt_9ano}</h5>
+              </div>
+            ))}
+          </div>
+        ) : (
+          ""
+        )}
+      </div>
     </div>
   );
 }
