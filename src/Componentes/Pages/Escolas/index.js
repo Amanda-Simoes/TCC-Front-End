@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import "./style.css";
+import "../../Style/style.css";
 
 function Escolas() {
   const [result, setResult] = useState([]);

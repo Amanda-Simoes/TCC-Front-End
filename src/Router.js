@@ -3,6 +3,7 @@ import Escolas from "./Componentes/Pages/Escolas";
 import Details from "./Componentes/Pages/Detalhes";
 import Comparacao from "./Componentes/Pages/Comparação";
 import Ranking from "./Componentes/Pages/Ranking";
+import QualidadeEnsino from "./Componentes/Pages/QualidadeEnsino";
 import Container from "./Componentes/Layout/Container/container";
 import Navbar from "./Componentes/Layout/navbar/navbar"
 
@@ -16,6 +17,7 @@ function Router() {
           <Route path="/detalhe/:id" element={<Details />} />
           <Route path="/comparacao" element={<Comparacao />} />
           <Route path="/ranking-escolas" element={<Ranking />} />
+          <Route path="/qualidade-ensino" element={<QualidadeEnsino />} />
         </Routes>
       </Container>
     </BrowserRouter>

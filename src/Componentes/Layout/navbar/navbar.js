@@ -22,6 +22,9 @@ function Navbar() {
           <li class="item"> 
             <Link to="/ranking-escolas">Ranking</Link>
           </li>
+          <li class="item"> 
+            <Link to="/qualidade-ensino">Qualidade de Ensino</Link>
+          </li>
         </ul>
       </Container>
     </nav>
