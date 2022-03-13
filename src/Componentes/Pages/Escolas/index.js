@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Card, Row, Col, ListGroup, Button, Container } from "reactstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "../../Style/style.css";
 
 function Escolas() {
@@ -40,10 +42,7 @@ function Escolas() {
   return (
     <div>
       <h3 class="titulo">Listagem de Escolas</h3>
-
-      <div class="form">
-        <form onSubmit={enviar}>
-          <div class="form-base-primary">
+      <form onSubmit={enviar}>
             <label> Escola: </label>
             <input
               class="escola"
@@ -52,9 +51,21 @@ function Escolas() {
               value={escola}
               onChange={(e) => setEscola(e.target.value)}
             />
+            <label> Fundamental 1 </label>
+            <input
+              type="checkbox"
+              checked={fund_ai}
+              onChange={(e) => setFund_ai(e.target.checked)}
+            />{" "}
+            <label> Fundamental 2 </label>
+            <input
+              type="checkbox"
+              checked={fund_af}
+              onChange={(e) => setFund_af(e.target.checked)}
+            />{" "}
             <label> UF: </label>
             <select value={uf} onChange={(e) => setUf(e.target.value)}>
-              <option value="undefined">--</option>
+              <option value="undefined">Selecione</option>
               <option value="AC">AC</option>
               <option value="AL">AL</option>
               <option value="AM">AM</option>
@@ -83,24 +94,12 @@ function Escolas() {
               <option value="SP">SP</option>
               <option value="TO">TO</option>
             </select>
-            <label> Fundamental 1 </label>
-            <input
-              type="checkbox"
-              checked={fund_ai}
-              onChange={(e) => setFund_ai(e.target.checked)}
-            />{" "}
-            <label> Fundamental 2 </label>
-            <input
-              type="checkbox"
-              checked={fund_af}
-              onChange={(e) => setFund_af(e.target.checked)}
-            />{" "}
             <label> Dependencias: </label>
             <select
               value={dependencia}
               onChange={(e) => setDependencia(e.target.value)}
             >
-              <option value="undefined">--</option>
+              <option value="undefined">Selecione</option>
               <option value="Municipal">Municipal</option>
               <option value="Estadual">Estadual</option>
               <option value="Privada">Privada</option>
@@ -110,12 +109,10 @@ function Escolas() {
               value={localizacao}
               onChange={(e) => setLocalizacao(e.target.value)}
             >
-              <option value="undefined">--</option>
+              <option value="undefined">Selecione</option>
               <option value="Rural">Rural</option>
               <option value="Urbana">Urbana</option>
             </select>
-          </div>
-          <div class="form-filter">
             <label> Educação Indigina: </label>
             <input
               type="checkbox"
@@ -133,43 +130,31 @@ function Escolas() {
               type="checkbox"
               onChange={(e) => setAee(e.target.checked)}
             />{" "}
-          </div>
-          <div class="button-enviar">
-            <button class="button" type="submit">
-              Enviar
-            </button>
-          </div>
-        </form>
-      </div>
+        <Button color="primary" type="submit">
+          Enviar
+        </Button>
+      </form>
 
       <div class="resultado">
         {typeof result === "string"
           ? result
           : result.map((element) => (
-              <div>
-                <table>
-                  <tr>
-                    <th>Escola</th>
-                    <th>UF</th>
-                    <th>Endereço</th>
-                  </tr>
-                  <tr>
-                    <td>
-                      <Link to={"/detalhe/" + element.cod_escola}>
-                        {element.nome_escola}
-                      </Link>
-                    </td>
-                    <td>
-                      <div>Uf: {element.uf} </div>
-                    </td>
-                    <td>
-                      <div>Endereço: {element.endereco}</div>
-                    </td>
-                  </tr>
-                </table>
-
-                <br />
-              </div>
+                  <div>
+                      <div>
+                        {" "}
+                        Escola:{" "}
+                        <Link to={"/detalhe/" + element.cod_escola}>
+                          {element.nome_escola}
+                        </Link>{" "}
+                      </div>
+                      <div> UF: {element.uf} </div>
+                      {element.endereco != null ? (
+                        <div> Endereço: {element.endereco} </div>
+                      ) : (
+                        ""
+                      )}
+                      <br />
+                  </div>
             ))}
       </div>
     </div>

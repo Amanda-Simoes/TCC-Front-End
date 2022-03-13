@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { Card, ListGroup, Button } from 'react-bootstrap'
 
 function Comparacao() {
   const [result1, setResult1] = useState("");
@@ -36,21 +37,26 @@ function Comparacao() {
 
   return (
     <div>
-      <h3 class="titulo">Escolas</h3>
+    
+      <label class="titulo">Comparação de Escolas</label>
 
       <div class="form">
         <form onSubmit={enviar}>
+        <label> Escola: </label>
           <input
             type="text"
             value={escola1}
             onChange={(e) => setEscola1(e.target.value)}
           />
+        <label> Escola: </label>
           <input
             type="text"
             value={escola2}
             onChange={(e) => setEscola2(e.target.value)}
           />
-          <button type="submit">Enviar</button>
+          <Button variant="primary" type="submit">
+            Enviar
+          </Button>
         </form>
       </div>
 
@@ -66,18 +72,18 @@ function Comparacao() {
               {result1.data.escola[0].localizacao === 1 ? "Urbana" : "Rural"}
             </h5>
             <h5>
-              {result1.data.escola[0].fund_ai === 1
+              {result1.data.escola[0].ensino_fund_ai === "1"
                 ? "Ensino Fundamental 1"
                 : "Não possui Ensino Fundamental 1"}
             </h5>
             <h5>
-              {result1.data.escola[0].fund_af === 1
+              {result1.data.escola[0].ensino_fund_af === "1"
                 ? "Ensino Fundamental 2"
                 : "Não possui Ensino Fundamental 2"}
             </h5>
-            <h4>Notas</h4>Matemática
             {result1.data.notas.map((element) => (
               <div>
+                <h4>Notas</h4>
                 <h5>Ano do Saeb: {element.id_saeb}</h5>
                 <h5>Nota de Português 5º ano:{element.pt_5ano}</h5>
                 <h5>Nota de Matemática 5º ano:{element.pt_9ano}</h5>
@@ -112,9 +118,9 @@ function Comparacao() {
                 ? "Ensino Fundamental 2"
                 : "Não possui Ensino Fundamental 2"}
             </h5>
-            <h4>Notas</h4>Matemática
             {result2.data.notas.map((element) => (
               <div>
+                <h4>Notas</h4>
                 <h5>Ano do Saeb: {element.id_saeb}</h5>
                 <h5>Nota de Português 5º ano:{element.pt_5ano}</h5>
                 <h5>Nota de Matemática 5º ano:{element.pt_9ano}</h5>

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { Card, ListGroup, Button } from 'react-bootstrap'
 
 function Ranking() {
   const [result, setResult] = useState([]);
@@ -110,19 +111,19 @@ function Ranking() {
         </select>
         Localização
 
-          <button type="submit">Enviar</button>
+        <Button variant="primary" type="submit">
+          Enviar
+        </Button>
       </form>
 
       {result.map((element) => 
         <div>
           <div>Escola: {element.nome_escola}
         </div>
-
-
-          {/* <div>Uf: {element.uf} </div>
-          <div>Endereço: {element.endereco}</div> */}
           {order === "pt5" ? <div>Nota do 5° ano de Português: {element.media}</div> : <div></div>}
-
+          {order === "mt5" ? <div>Nota do 5° ano de Matemática: {element.media}</div> : <div></div>}
+          {order === "pt9" ? <div>Nota do 9° ano de Português: {element.media}</div> : <div></div>}
+          {order === "mt9" ? <div>Nota do 9° ano de Matemática: {element.media}</div> : <div></div>}
 
           <br />
         </div>)}
