@@ -124,6 +124,7 @@ function Ranking() {
           {order === "mt5" ? <div>Nota do 5° ano de Matemática: {element.media}</div> : <div></div>}
           {order === "pt9" ? <div>Nota do 9° ano de Português: {element.media}</div> : <div></div>}
           {order === "mt9" ? <div>Nota do 9° ano de Matemática: {element.media}</div> : <div></div>}
+          {order === "media" ? <div>Media Geral: {element.media}</div> : <div></div>}
 
           <br />
         </div>)}

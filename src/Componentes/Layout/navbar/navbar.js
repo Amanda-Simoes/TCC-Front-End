@@ -10,7 +10,7 @@ import "./style.css";
 function NavbarTela() {
   return (
     // <nav class="navbar">
-    <Navbar color="primary" dark expand="md">
+    <Navbar id="navbar" dark expand="md">
       <Container>
         <Nav className="mr-auto" navbar>
           {/* <Link to='/escolas'>

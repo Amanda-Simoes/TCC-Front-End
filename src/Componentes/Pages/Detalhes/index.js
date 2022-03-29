@@ -1,6 +1,14 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
+import Map from "ol/Map";
+import View from "ol/View";
+import { Tile as TileLayer, Vector as VectorLayer } from "ol/layer";
+import { OSM, Vector as VectorSource } from "ol/source";
+import Feature from "ol/Feature";
+import { Point } from "ol/geom";
+import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
+import "ol/ol.css";
 
 function Details() {
   const { id } = useParams();
@@ -8,6 +16,74 @@ function Details() {
 
   const [result, setResult] = useState([]);
   const [notas, setNotas] = useState([]);
+
+  const mapDivRef = useRef(null);
+
+  const olView = useRef(
+    new View({
+      center: [0, 0],
+      projection: "EPSG:4326",
+      zoom: 2,
+    })
+  );
+
+  const mapRef = useRef();
+
+  useEffect(() => {
+    const map = new Map({
+      layers: [
+        new TileLayer({
+          source: new OSM(),
+        }),
+      ],
+      view: olView.current,
+    });
+    map.setTarget(mapDivRef.current);
+
+    mapRef.current = map;
+
+    return () => {
+      map.setTarget(undefined);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (result.length !== 1) {
+      return;
+    }
+
+    const school = result[0];
+
+    const positionFeature = new Feature();
+    positionFeature.setStyle(
+      new Style({
+        image: new CircleStyle({
+          radius: 8,
+          fill: new Fill({
+            color: "#3399CC",
+          }),
+          stroke: new Stroke({
+            color: "#fff",
+            width: 2,
+          }),
+        }),
+      })
+    );
+
+    const coordinates = [school.longitude, school.latitude];
+
+    positionFeature.setGeometry(new Point(coordinates));
+
+    const positionLayer = new VectorLayer({
+      source: new VectorSource({
+        features: [positionFeature],
+      }),
+    });
+
+    mapRef.current.addLayer(positionLayer);
+    olView.current.setZoom(18);
+    olView.current.setCenter(coordinates);
+  }, [result]);
 
   useEffect(() => {
     const infoEscola = async () => {
@@ -30,6 +106,7 @@ function Details() {
 
   return (
     <div>
+      <div ref={mapDivRef} style={{height: '500px', width: '500px'}} />
       {typeof result === "string"
         ? result
         : result.map((element) => <div>{element.nome_escola}</div>
