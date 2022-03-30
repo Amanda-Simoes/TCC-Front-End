@@ -15,7 +15,6 @@ function Escolas() {
   const [dependencia, setDependencia] = useState();
   const [localizacao, setLocalizacao] = useState();
   const [acessibilidade, setAcessibilidade] = useState(false);
-  const [aee, setAee] = useState(false);
   const [edu_indigena, setEduIndigena] = useState(false);
   const [cities, setCities] = useState([]);
   const [municipio, setMunicipio] = useState("");
@@ -32,7 +31,6 @@ function Escolas() {
         dependencia: dependencia,
         localizacao: localizacao,
         acessibilidade: acessibilidade,
-        aee: aee,
         edu_indigena: edu_indigena,
       });
       console.log(reqResult);
@@ -66,7 +64,7 @@ function Escolas() {
 
   return (
     <div>
-      <label class="titulo">Escolas</label>
+      <label className="titulo">Escolas</label>
       <div id="outIn">
         <form onSubmit={enviar}>
           <div id="first">
@@ -183,11 +181,6 @@ function Escolas() {
               type="checkbox"
               checked={acessibilidade}
               onChange={(e) => setAcessibilidade(e.target.checked)}
-            />{" "}
-            <label> AEE: </label>
-            <input
-              type="checkbox"
-              onChange={(e) => setAee(e.target.checked)}
             />{" "}
             <Button id="button" type="submit">
               Enviar

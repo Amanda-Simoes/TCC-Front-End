@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Container from "../Container/container";
-import { Navbar, Nav, NavItem, NavLink } from "reactstrap";
+import { Navbar, Nav, NavItem, NavLink , NavbarBrand} from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import logo from "./logo.png";
@@ -11,8 +11,8 @@ function NavbarTela() {
   return (
     // <nav class="navbar">
     <Navbar id="navbar" dark expand="md">
-      <Container>
-        <Nav className="mr-auto" navbar>
+        <NavbarBrand><h4>GuiaEduKids</h4></NavbarBrand>
+        <Nav className="navContent" navbar>
           {/* <Link to='/escolas'>
              <img src={logo} alt="GuiaEduKids" width="150px"/>
         </Link> */}
@@ -48,7 +48,6 @@ function NavbarTela() {
             </NavLink>
           </NavItem>
         </Nav>
-      </Container>
     </Navbar>
   );
 }

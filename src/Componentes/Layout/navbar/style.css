@@ -1,8 +1,26 @@
 .navbar{
     background-color: #757BC8;
+    justify-content: flex-end !important;
+}
+
+#navbar{
+    justify-content: flex-end !important;
 }
 
 .item{
     color: white;
     text-decoration: none;
+}
+
+.navContainer{
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+    margin:  auto;
+    flex-wrap: wrap;
+    background-color: blue;
+}
+
+.navContent{
+    justify-content: flex-end;
 }
