@@ -143,30 +143,30 @@ function Ranking() {
       {result.map((element) => (
         <div>
           <div>
-            Posição: {(posicao = posicao + 1)} - Escola: {element.nome_escola}
+            <strong>Posição: {(posicao = posicao + 1)}</strong> - Escola: {element.nome_escola}
           </div>
 
-          {order === "pt5" ? (
+          {element.descricao === "pt5" ? (
             <div>Nota do 5° ano de Português: {element.media}</div>
           ) : (
             <div></div>
           )}
-          {order === "mt5" ? (
+          {element.descricao === "mt5" ? (
             <div>Nota do 5° ano de Matemática: {element.media}</div>
           ) : (
             <div></div>
           )}
-          {order === "pt9" ? (
+          {element.descricao === "pt9" ? (
             <div>Nota do 9° ano de Português: {element.media}</div>
           ) : (
             <div></div>
           )}
-          {order === "mt9" ? (
+          {element.descricao === "mt9" ? (
             <div>Nota do 9° ano de Matemática: {element.media}</div>
           ) : (
             <div></div>
           )}
-          {order === "media" ? (
+          {element.descricao === "media" ? (
             <div>Media Geral: {element.media}</div>
           ) : (
             <div></div>
