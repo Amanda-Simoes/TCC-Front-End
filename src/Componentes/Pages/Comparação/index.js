@@ -4,12 +4,15 @@ import { Card, ListGroup, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../Style/style.css";
 
+import BootstrapSelect from "react-bootstrap-select-dropdown";
+
 function Comparacao() {
   const [result1, setResult1] = useState("");
   const [result2, setResult2] = useState("");
   const [escola1, setEscola1] = useState("");
   const [escola2, setEscola2] = useState("");
-  const [escolas, setEscolas] = useState("");
+  const [escolas, setEscolas] = useState([]);
+  // const [aux, setAux] = useState(false);
 
   const enviar = async (e) => {
     e.preventDefault();
@@ -38,20 +41,38 @@ function Comparacao() {
     }
   };
 
+  // let data = [];
+  // let options = [];
+
   // useEffect(() => {
-  //   const listagemEscola = async () => {
-  //     const url = "http://localhost:3000/app/escolasComboComparacao";
-  //     try {
-  //       const todasEscolas = await axios.post(url);
-  //       setEscolas(todasEscolas.data);
-  //       console.log(escolas);
-  //     } catch (err) {
-  //       console.log("erro");
+  // const listagemEscola = async () => {
+  //   const url = "http://localhost:3000/app/escolasComboComparacao";
+  //   try {
+  //     const todasEscolas = await axios.post(url);
+  //     setEscolas(todasEscolas.data);
+
+  //     for (let i = 0; i < todasEscolas.data.length; i++) {
+  //       // eslint-disable-next-line react-hooks/exhaustive-deps
+  //       data = [
+  //         {
+  //           value: todasEscolas.data[i].nome_escola,
+  //           label: todasEscolas.data[i].nome_escola,
+  //         },
+  //       ];
+  //       options.push(...data);
   //     }
-  //   };
-  //   console.log(escolas);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
   //   listagemEscola();
-  // }, [escola1]);
+  // }, [aux]);
+
+  // setAux(true)
+
+  // const selectEscola = (escola) => {
+  //   setEscola1(escola.selectedValue);
+  // };
 
   return (
     <div className="conteudoFiltro">
@@ -59,16 +80,6 @@ function Comparacao() {
 
       <div className="filtroEscolas">
         <form onSubmit={enviar}>
-          {/* <select onChange={(e) => setEscolas(e.target.value)}>
-            <option value="">Selecione</option>
-            {escolas.length > 0
-              ? escolas.map((escolas) => (
-                  <option key={escolas.cod_escola} value={escolas.nome_escola}>
-                    {escolas.nome_escola}
-                  </option>
-                ))
-              : null}
-          </select> */}
           <label>
             {" "}
             Escola:
@@ -76,6 +87,7 @@ function Comparacao() {
               type="text"
               value={escola1}
               onChange={(e) => setEscola1(e.target.value)}
+              placeholder="Informa uma escola"
             />
           </label>
           <label>
@@ -85,6 +97,7 @@ function Comparacao() {
               type="text"
               value={escola2}
               onChange={(e) => setEscola2(e.target.value)}
+              placeholder="Informa uma escola"
             />
           </label>
           <div className="buttonContainer">
@@ -145,16 +158,16 @@ function Comparacao() {
                       <label>Ano do Saeb: {element.id_saeb}</label>
                     </div>
                     <div>
-                      <label>Nota de Português 5º ano:{element.pt_5ano}</label>
+                      <label>Nota de Português 5º ano: {element.pt_5ano}</label>
                     </div>
                     <div>
-                      <label>Nota de Matemática 5º ano:{element.pt_9ano}</label>
+                      <label>Nota de Matemática 5º ano: {element.pt_9ano}</label>
                     </div>
                     <div>
-                      <label>Nota de Português 9º ano:{element.mt_5ano}</label>
+                      <label>Nota de Português 9º ano: {element.mt_5ano}</label>
                     </div>
                     <div>
-                      <label>Nota de Matemática 9º ano:{element.mt_9ano}</label>
+                      <label>Nota de Matemática 9º ano: {element.mt_9ano}</label>
                     </div>
                   </div>
                 ))}

@@ -95,7 +95,29 @@ select {
   align-items: center;
 }
 
+.inputRanking{
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 .buttonRanking{
   margin-top: 20px;
   padding-left: 5px;
+}
+
+.geral{
+  width: 100%;
+}
+
+.notasQualidade{
+  padding-top: 40px;
+  width: 100%;
+}
+
+.subtitulo{
+  font-size: 20px;
+  font-family: Noto Sans;
+  font-weight: bold;
 }

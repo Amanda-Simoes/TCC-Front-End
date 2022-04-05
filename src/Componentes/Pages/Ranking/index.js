@@ -1,51 +1,61 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Card, ListGroup, Button } from "react-bootstrap";
+import api from "../../../service/api";
 
 function Ranking() {
   const [result, setResult] = useState([]);
-  const [order, setOrder] = useState("undefined");
+  const [ensino, setEnsino] = useState("");
+  const [disciplina, setDisciplina] = useState("");
   const [uf, setUf] = useState();
-  const [fund_ai, setFund_ai] = useState(true);
-  const [fund_af, setFund_af] = useState(true);
   const [dependencia, setDependencia] = useState();
   const [localizacao, setLocalizacao] = useState();
+  const [cities, setCities] = useState([]);
+  const [municipio, setMunicipio] = useState("");
   let posicao = 0;
 
   const enviar = async (e) => {
     e.preventDefault();
-    if (order === "undefined") {
-      alert("Preencha o filtro ANO ESCOLA");
-    } else if (fund_ai == false && fund_af == false) {
-      alert("Selecione o nivel de ensino!");
-    } else {
-      try {
-        const reqResult = await axios.post(
-          "http://localhost:3000/app/ranking-escolas",
-          {
-            order: order,
-            uf: uf,
-            fund_ai: fund_ai,
-            fund_af: fund_af,
-            dependencia: dependencia,
-            localizacao: localizacao,
-          }
-        );
-        setResult(reqResult.data);
-      } catch (err) {
-        setResult(err.response.data);
-        console.log(err.response);
-      }
+    try {
+      const reqResult = await axios.post(
+        "http://localhost:3000/app/ranking-escolas",
+        {
+          ensino: ensino,
+          disciplina: disciplina,
+          uf: uf,
+          municipio: municipio,
+          dependencia: dependencia,
+          localizacao: localizacao,
+        }
+      );
+      setResult(reqResult.data);
+    } catch (err) {
+      setResult(err.response.data);
+      console.log(err.response);
     }
+    console.log(result);
   };
 
-  // useEffect(() => {
-  //   const rankingPos = () => {
-  //     let pos = posicao + 1;
-  //     this.setPosicao({pos})
-  //   }
-  //   rankingPos()
-  // }, [ ]);
+  const getCities = async () => {
+    // setLoading(true);
+    await api
+      .get(`localidades/estados/${uf}/municipios`)
+      .then((response) => {
+        if (response) {
+          console.log("cidades", response.data);
+          setCities(response.data);
+          // setLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        // setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getCities();
+  }, [uf]);
 
   return (
     <div>
@@ -54,20 +64,29 @@ function Ranking() {
       <form onSubmit={enviar}>
         <div className="rankingResultados">
           <label>
-            Filtro:
-            <select value={order} onChange={(e) => setOrder(e.target.value)}>
-              <option value="undefined">--</option>
-              <option value="pt5">5° ano de Português</option>
-              <option value="pt9">9° ano de Português</option>
-              <option value="mt5">5° ano de Matemática</option>
-              <option value="mt9">9° ano de Matemática</option>
-              <option value="media">Média Geral</option>
+            Ensino:
+            <select value={ensino} onChange={(e) => setEnsino(e.target.value)}>
+              <option value="undefined">Selecione</option>
+              <option value="fundai">Fundamental 1</option>
+              <option value="fundaf">Fundamental 2</option>
+            </select>
+          </label>
+          <label>
+            Disciplina:
+            <select
+              value={disciplina}
+              onChange={(e) => setDisciplina(e.target.value)}
+            >
+              <option value="undefined">Selecione</option>
+              <option value="pt">Português</option>
+              <option value="mt">Matemática</option>
+              <option value="ambas">Média</option>
             </select>
           </label>
           <label>
             UF:
             <select value={uf} onChange={(e) => setUf(e.target.value)}>
-              <option value="undefined">--</option>
+              <option value="undefined">Selecione</option>
               <option value="AC">AC</option>
               <option value="AL">AL</option>
               <option value="AM">AM</option>
@@ -98,12 +117,26 @@ function Ranking() {
             </select>
           </label>
           <label>
+            {" "}
+            Municipios:
+            <select onChange={(e) => setMunicipio(e.target.value)}>
+              <option value="undefined">Selecione</option>
+              {cities.length >= 0
+                ? cities.map((city) => (
+                    <option key={city.id} value={city.nome}>
+                      {city.nome}
+                    </option>
+                  ))
+                : null}
+            </select>
+          </label>
+          <label>
             Dependencia
             <select
               value={dependencia}
               onChange={(e) => setDependencia(e.target.value)}
             >
-              <option value="undefined">--</option>
+              <option value="undefined">Selecione</option>
               <option value="Municipal">Municipal</option>
               <option value="Estadual">Estadual</option>
               <option value="Privada">Privada</option>
@@ -115,23 +148,11 @@ function Ranking() {
               value={localizacao}
               onChange={(e) => setLocalizacao(e.target.value)}
             >
-              <option value="undefined">--</option>
+              <option value="undefined">Selecione</option>
               <option value="Rural">Rural</option>
               <option value="Urbana">Urbana</option>
             </select>
           </label>
-          <label>Fundamental 1</label>
-          <input
-            type="checkbox"
-            checked={fund_ai}
-            onChange={(e) => setFund_ai(e.target.checked)}
-          />{" "}
-          <label>Fundamental 2</label>
-          <input
-            type="checkbox"
-            checked={fund_af}
-            onChange={(e) => setFund_af(e.target.checked)}
-          />{" "}
           <div className="buttonRanking">
             <Button id="button" type="submit">
               Enviar
@@ -143,34 +164,9 @@ function Ranking() {
       {result.map((element) => (
         <div>
           <div>
-            <strong>Posição: {(posicao = posicao + 1)}</strong> - Escola: {element.nome_escola}
+            <strong>{(posicao = posicao + 1)}</strong>: {element.nome_escola}, {element.municipio} - {element.uf}. 
+            Nota: {element.media}
           </div>
-
-          {element.descricao === "pt5" ? (
-            <div>Nota do 5° ano de Português: {element.media}</div>
-          ) : (
-            <div></div>
-          )}
-          {element.descricao === "mt5" ? (
-            <div>Nota do 5° ano de Matemática: {element.media}</div>
-          ) : (
-            <div></div>
-          )}
-          {element.descricao === "pt9" ? (
-            <div>Nota do 9° ano de Português: {element.media}</div>
-          ) : (
-            <div></div>
-          )}
-          {element.descricao === "mt9" ? (
-            <div>Nota do 9° ano de Matemática: {element.media}</div>
-          ) : (
-            <div></div>
-          )}
-          {element.descricao === "media" ? (
-            <div>Media Geral: {element.media}</div>
-          ) : (
-            <div></div>
-          )}
 
           <br />
         </div>

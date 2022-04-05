@@ -44,7 +44,7 @@ function Details() {
 
     return () => {
       map.setTarget(undefined);
-    }
+    };
   }, []);
 
   useEffect(() => {
@@ -106,68 +106,220 @@ function Details() {
 
   return (
     <div>
-      <div ref={mapDivRef} style={{height: '500px', width: '500px'}} />
       {typeof result === "string"
         ? result
-        : result.map((element) => <div>{element.nome_escola}</div>
-      )}
+        : result.map((element) => (
+            <div className="titulo">{element.nome_escola}</div>
+          ))}
 
-      {result.map((element) => 
+      {result.map((element) => (
         <div>
-          <h4>Informações básicas</h4>
-          <h5>Funcionamento: {element.funcionamento}</h5>
-          <h5>Dependência: {element.dependencia}</h5>
-          <h5>Localização: {element.localizacao === "1" ? "Urbana" : "Rural"}</h5>
-          <h5>Endereço: {element.endereco}</h5>
+          <label className="subtitulo">Informações básicas:</label>
+          <div>
+            <label>
+              <strong>Funcionamento: </strong>
+              {element.funcionamento}
+            </label>
+          </div>
+          <div>
+            <label>
+              <strong>Dependência: </strong>
+              {element.dependencia}
+            </label>
+          </div>
+          <div>
+            <label>
+              <strong>
+                Localização: {element.localizacao === "1" ? "Urbana" : "Rural"}
+              </strong>
+            </label>
+          </div>
+          {element.endereco ? (
+            <div>
+              <label>
+                <strong>Endereço: </strong>
+                {element.endereco}
+              </label>
+            </div>
+          ) : null}
         </div>
-        )}
+      ))}
 
-        <h4>Notas</h4>
+      <div ref={mapDivRef} style={{ height: "500px", width: "500px" }} />
 
-        {notas.map((element) => 
+      <br />
+
+      {notas.map((element) => (
         <div>
-          <h5>Ano do Saeb: {element.id_saeb}</h5>
-          <h5>5º ano de Lingua Portuguesa: {element.pt_5ano}</h5>
-          <h5>5º ano de Matemática: {element.mt_5ano}</h5>
-          <h5>9º ano de Lingua Portuguesa: {element.pt_9ano}</h5>
-          <h5>9º ano de Matemática: {element.mt_9ano}</h5>
+          <label className="subtitulo">Notas</label>
+          <div>
+            <label>
+              <strong>Ano do Saeb: </strong>
+              {element.id_saeb}
+            </label>
+          </div>
+          <div>
+            <label>
+              <strong>5º ano de Lingua Portuguesa: </strong>
+              {element.pt_5ano === 0 ? "Sem Nota" : element.pt_5ano}
+            </label>
+          </div>
+          <div>
+            <label>
+              <strong>5º ano de Matemática: </strong>
+              {element.mt_5ano === 0 ? "Sem Nota" : element.mt_5ano}
+            </label>
+          </div>
+          <div>
+            <label>
+              <strong>9º ano de Lingua Portuguesa: </strong>
+              {element.pt_9ano === 0 ? "Sem Nota" : element.pt_9ano}
+            </label>
+          </div>
+          <div>
+            <label>
+              <strong>9º ano de Matemática: </strong>
+              {element.mt_9ano === 0 ? "Sem Nota" : element.mt_9ano}
+            </label>
+          </div>
+          <br />
         </div>
-        )}
+      ))}
 
-        {result.map((element) =>
+      {result.map((element) => (
         <div>
-          <h4>Acessibilidade</h4>
-          <h5>
-          <ul>
-            <li>Possui banheiro PNE? {element.banheiro_pne === "1" ? "Sim" : "Não"}</li>
-            <li>Possui acessibilidade em corrimãos? {element.acess_corrimao === "1" ? "Sim" : "Não"}</li>
-            <li>Possui pisos tateis? {element.acess_pisos_tateis === "1" ? "Sim" : "Não"}</li>
-            <li>Possui rampas? {element.acess_rampas === "1" ? "Sim" : "Não"}</li>
-            <li>Possui acessibilidade sonora? {element.acess_sonoro === "1" ? "Sim" : "Não"}</li>
-            <li>Possui sinalização visual? {element.acess_sinal_visual === "1" ? "Sim" : "Não"}</li>
-          </ul></h5>
-        </div>)}
+          <label className="subtitulo">Acessibilidade</label>
+          <div>
+            <label>
+              <ul>
+                <li>
+                  <strong>Banheiro PNE: </strong>
+                  {element.banheiro_pne === "1" ? "Possui" : "Não possui"}
+                </li>
+                <li>
+                  <strong>Acessibilidade em corrimãos: </strong>
+                  {element.acess_corrimao === "1" ? "Possui" : "Não possui"}
+                </li>
+                <li>
+                  <strong>Pisos tateis: </strong>
+                  {element.acess_pisos_tateis === "1" ? "Possui" : "Não possui"}
+                </li>
+                <li>
+                  <strong>Rampas: </strong>
+                  {element.acess_rampas === "1" ? "Possui" : "Não possui"}
+                </li>
+                <li>
+                  <strong>Acessibilidade sonora: </strong>
+                  {element.acess_sonoro === "1" ? "Possui" : "Não possui"}
+                </li>
+                <li>
+                  <strong>Sinalização visual: </strong>
+                  {element.acess_sinal_visual === "1" ? "Possui" : "Não possui"}
+                </li>
+              </ul>
+              {console.log(element)}
+            </label>
+          </div>
+        </div>
+      ))}
 
-        {result.map((element) => 
+      {result.map((element) => (
         <div>
-          <h4>Infraestrutura e informação adicionais</h4>
-          <h5>Possui auditório? {element.auditorio === "1" ? "Sim" : "Não"}</h5>
-          <h5>Possui biblioteca? {element.biblioteca === "1" ? "Sim" : "Não"}</h5>
-          <h5>Possui sala de leitura? {element.sala_leitura === "1" ? "Sim" : "Não"}</h5>
-          <h5>Possui dormitorio? {element.dormitorio === "1" ? "Sim" : "Não"}</h5>
-          <h5>Possui laboratório de ciências? {element.lab_ciencias === "1" ? "Sim" : "Não"}</h5>
-          <h5>Possui laboratório de informática? {element.lab_informatica === "1" ? "Sim" : "Não"}</h5>
-          <h5>Possui parque infantil? {element.parque_infantil === "1" ? "Sim" : "Não"}</h5>
-          <h5>Possui quadra de esporte: {element.quadra_esporte === "1" ? "Sim" : "Não"}</h5>
-          <h5>Possui sala de arte? {element.sala_artes === "1" ? "Sim" : "Não"}</h5>
-          <h5>Possui sala de música? {element.sala_musica === "1" ? "Sim" : "Não"}</h5>
-          <h5>Possui sala de dança? {element.sala_danca === "1" ? "Sim" : "Não"}</h5>
-          <h5>Possui educação indigena? {element.educacao_indigena === "1" ? "Sim" : "Não"}</h5>
-          <h5>Possui exame de seleção? {element.exame_selecao === "1" ? "Sim" : "Não"}</h5>
-          <h5>Possui grêmio estudantil? {element.gremio_estudantil === "1" ? "Sim" : "Não"}</h5>
-          <h5>Possui atendimento educacional especializado (aee)? {element.aee === "1" ? "Sim" : "Não"}</h5>
-        </div>)}
-
+          <label className="subtitulo">
+            Infraestrutura e informação adicionais
+          </label>
+          <div>
+            <label>
+              <strong>Auditório: </strong>
+              {element.auditorio === "1" ? "Possui" : "Não possui"}
+            </label>
+          </div>
+          <div>
+            <label>
+              <strong>Biblioteca: </strong>
+              {element.biblioteca === "1" ? "Possui" : "Não possui"}
+            </label>
+          </div>
+          <div>
+            <label>
+              <strong>Sala de leitura: </strong>
+              {element.sala_leitura === "1" ? "Possui" : "Não possui"}
+            </label>
+          </div>
+          <div>
+            <label>
+              <strong>Possui dormitorio: </strong>
+              {element.dormitorio === "1" ? "Possui" : "Não possui"}
+            </label>
+          </div>
+          <div>
+            <label>
+              <strong>Laboratório de ciências: </strong>
+              {element.lab_ciencias === "1" ? "Possui" : "Não possui"}
+            </label>
+          </div>
+          <div>
+            <label>
+              <strong>Laboratório de informática: </strong>
+              {element.lab_informatica === "1" ? "Possui" : "Não possui"}
+            </label>
+          </div>
+          <div>
+            <label>
+              <strong>Parque infantil: </strong>
+              {element.parque_infantil === "1" ? "Possui" : "Não possui"}
+            </label>
+          </div>
+          <div>
+            <label>
+              <strong>Quadra de esporte: </strong>
+              {element.quadra_esporte === "1" ? "Possui" : "Não possui"}
+            </label>
+          </div>
+          <div>
+            <label>
+              <strong>Sala de arte: </strong>
+              {element.sala_artes === "1" ? "Possui" : "Não possui"}
+            </label>
+          </div>
+          <div>
+            <label>
+              <strong>Sala de música: </strong>
+              {element.sala_musica === "1" ? "Possui" : "Não possui"}
+            </label>
+          </div>
+          <div>
+            <label>
+              <strong>Sala de dança: </strong>
+              {element.sala_danca === "1" ? "Possui" : "Não possui"}
+            </label>
+          </div>
+          <div>
+            <label>
+              <strong>Educação indigena: </strong>
+              {element.educacao_indigena === "1" ? "Possui" : "Não possui"}
+            </label>
+          </div>
+          <div>
+            <label>
+              <strong>Exame de seleção: </strong>
+              {element.exame_selecao === "1" ? "Possui" : "Não possui"}
+            </label>
+          </div>
+          <div>
+            <label>
+              <strong>Grêmio estudantil: </strong>
+              {element.gremio_estudantil === "1" ? "Possui" : "Não possui"}
+            </label>
+          </div>
+          <div>
+            <label>
+              <strong>Atendimento Educacional Especializado (AEE): </strong>
+              {element.aee === "1" ? "Possui" : "Não possui"}
+            </label>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

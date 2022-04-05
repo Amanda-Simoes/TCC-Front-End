@@ -83,7 +83,11 @@ function Escolas() {
             <label>
               {" "}
               UF:
-              <select value={uf} onChange={(e) => setUf(e.target.value)}>
+              <select
+                id="uf"
+                value={uf}
+                onChange={(e) => setUf(e.target.value)}
+              >
                 <option value="undefined">Selecione</option>
                 <option value="AC">AC</option>
                 <option value="AL">AL</option>
@@ -195,8 +199,6 @@ function Escolas() {
           : result.map((element) => (
               <div>
                 <div>
-                  {" "}
-                  Escola:{" "}
                   <Link to={"/detalhe/" + element.cod_escola}>
                     {element.nome_escola}
                   </Link>{" "}
