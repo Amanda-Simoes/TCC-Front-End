@@ -9,6 +9,7 @@ import Feature from "ol/Feature";
 import { Point } from "ol/geom";
 import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
 import "ol/ol.css";
+import { Table } from "reactstrap";
 
 function Details() {
   const { id } = useParams();
@@ -149,40 +150,46 @@ function Details() {
 
       <br />
 
+      {/* <label className="subtitulo">Notas</label> */}
+
       {notas.map((element) => (
         <div>
-          <label className="subtitulo">Notas</label>
           <div>
             <label>
-              <strong>Ano do Saeb: </strong>
-              {element.id_saeb}
+              <strong>Notas do Saeb de {element.id_saeb}</strong>
             </label>
           </div>
-          <div>
-            <label>
-              <strong>5º ano de Lingua Portuguesa: </strong>
-              {element.pt_5ano === 0 ? "Sem Nota" : element.pt_5ano}
-            </label>
-          </div>
-          <div>
-            <label>
-              <strong>5º ano de Matemática: </strong>
-              {element.mt_5ano === 0 ? "Sem Nota" : element.mt_5ano}
-            </label>
-          </div>
-          <div>
-            <label>
-              <strong>9º ano de Lingua Portuguesa: </strong>
-              {element.pt_9ano === 0 ? "Sem Nota" : element.pt_9ano}
-            </label>
-          </div>
-          <div>
-            <label>
-              <strong>9º ano de Matemática: </strong>
-              {element.mt_9ano === 0 ? "Sem Nota" : element.mt_9ano}
-            </label>
-          </div>
-          <br />
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Série</th>
+                <th>Disciplina</th>
+                <th>Nota</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>5º ano</td>
+                <td>Português</td>
+                <td>{element.pt_5ano > 0 ? element.pt_5ano : "Sem Nota"}</td>
+              </tr>
+              <tr>
+                <td>5º ano</td>
+                <td>Matemática</td>
+                <td>{element.mt_5ano > 0 ? element.mt_5ano : "Sem Nota"}</td>
+              </tr>
+              <tr>
+                <td>9º ano</td>
+                <td>Português</td>
+                <td>{element.pt_9ano > 0 ? element.pt_9ano : "Sem Nota"}</td>
+              </tr>
+              <tr>
+                <td>9º ano</td>
+                <td>Matemática</td>
+                <td>{element.mt_9ano > 0 ? element.mt_9ano : "Sem Nota"}</td>
+              </tr>
+            </tbody>
+          </Table>
         </div>
       ))}
 

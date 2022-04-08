@@ -164,8 +164,8 @@ function Ranking() {
       {result.map((element) => (
         <div>
           <div>
-            <strong>{(posicao = posicao + 1)}</strong>: {element.nome_escola}, {element.municipio} - {element.uf}. 
-            Nota: {element.media}
+            <strong>{(posicao = posicao + 1)}</strong>: {element.nome_escola},{" "}
+            {element.municipio} - {element.uf}. Nota: {element.media}
           </div>
 
           <br />
