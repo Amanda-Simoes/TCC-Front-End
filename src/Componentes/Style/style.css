@@ -121,3 +121,19 @@ select {
   font-family: Noto Sans;
   font-weight: bold;
 }
+
+.table{
+  margin-top: 5%;
+  width: 50%;
+}
+
+img{
+  width: 300px;
+}
+
+.imgLoading{
+  display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+}

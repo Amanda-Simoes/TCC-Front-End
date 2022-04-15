@@ -2,9 +2,12 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Card, ListGroup, Button } from "react-bootstrap";
 import api from "../../../service/api";
+import image from "../../../assets/loading.gif";
+import { Link } from "react-router-dom";
+import DataTable from "react-data-table-component";
 
 function Ranking() {
-  const [result, setResult] = useState([]);
+  const [result, setResult] = useState();
   const [ensino, setEnsino] = useState("");
   const [disciplina, setDisciplina] = useState("");
   const [uf, setUf] = useState();
@@ -12,10 +15,61 @@ function Ranking() {
   const [localizacao, setLocalizacao] = useState();
   const [cities, setCities] = useState([]);
   const [municipio, setMunicipio] = useState("");
+  const [Loading, setLoading] = useState(false);
   let posicao = 0;
+
+  const data = [];
+
+  if (result) {
+    let posicaoLinha = 0;
+    for (let i = 0; i < result.length; i++) {
+      posicaoLinha = posicaoLinha + 1;
+      let nomeLinha = result[i].nome_escola;
+      let cod_escola = result[i].cod_escola;
+      let municipioLinha = result[i].municipio;
+      let ufLinha = result[i].uf;
+      let notaLinha = Math.round(result[i].media);
+      data.push({
+        posicao: posicaoLinha,
+        nome: nomeLinha,
+        cod: cod_escola,
+        municipio: municipioLinha,
+        uf: ufLinha,
+        nota: notaLinha,
+      });
+    }
+  }
+
+  const columns = [
+    {
+      name: "Posição",
+      selector: (row) => row.posicao,
+      width: "10%",
+      sortable: true,
+    },
+    {
+      name: "Escola",
+      selector: (row) => <Link to={"/detalhe/" + row.cod}>{row.nome}</Link>,
+      width: "50%",
+    },
+    {
+      name: "Municipio",
+      selector: (row) => row.municipio,
+    },
+    {
+      name: "UF",
+      selector: (row) => row.uf,
+    },
+    {
+      name: "Nota",
+      selector: (row) => row.nota,
+      sortable: true,
+    },
+  ];
 
   const enviar = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const reqResult = await axios.post(
         "http://localhost:3000/app/ranking-escolas",
@@ -29,27 +83,27 @@ function Ranking() {
         }
       );
       setResult(reqResult.data);
+      setLoading(false);
     } catch (err) {
       setResult(err.response.data);
       console.log(err.response);
+      setLoading(false);
     }
     console.log(result);
+    setLoading(false);
   };
 
   const getCities = async () => {
-    // setLoading(true);
     await api
       .get(`localidades/estados/${uf}/municipios`)
       .then((response) => {
         if (response) {
           console.log("cidades", response.data);
           setCities(response.data);
-          // setLoading(false);
         }
       })
       .catch((error) => {
         console.log(error);
-        // setLoading(false);
       });
   };
 
@@ -80,7 +134,7 @@ function Ranking() {
               <option value="undefined">Selecione</option>
               <option value="pt">Português</option>
               <option value="mt">Matemática</option>
-              <option value="ambas">Média</option>
+              <option value="media">Português e Matemática</option>
             </select>
           </label>
           <label>
@@ -161,16 +215,15 @@ function Ranking() {
         </div>
       </form>
 
-      {result.map((element) => (
-        <div>
-          <div>
-            <strong>{(posicao = posicao + 1)}</strong>: {element.nome_escola},{" "}
-            {element.municipio} - {element.uf}. Nota: {element.media}
-          </div>
-
-          <br />
+      {Loading ? (
+        <div className="imgLoading">
+          <img src={image} />
         </div>
-      ))}
+      ) : null}
+
+      {result ? (
+        <DataTable columns={columns} data={data} pagination="true" />
+      ) : null}
     </div>
   );
 }

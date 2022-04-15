@@ -1,109 +1,136 @@
 import axios from "axios";
-import { Alert } from "bootstrap";
-import { useState, useEffect } from "react";
-import { Card, Row, Col, ListGroup, Button, Container } from "reactstrap";
-import api from "../../../service/api";
+import { useState } from "react";
 import "../../Style/style.css";
+import { Button } from "react-bootstrap";
+import React, { PureComponent } from "react";
+import {
+  BarChart,
+  Bar,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+import image from "../../../assets/loading.gif";
+import DataTable from "react-data-table-component";
 
 function QualidadeEnsino() {
-  const [result, setResult] = useState("");
-  const [uf, setUf] = useState("");
-  const [cities, setCities] = useState([]);
-  const [municipio, setMunicipio] = useState("");
+  const [result1, setResult1] = useState("");
+  const [nivelEscolaridade1, setNivelEscolaridade1] = useState("");
+  const [disciplina1, setDisciplina1] = useState("");
+  const [dependencia1, setDependencia1] = useState("");
+  const [localizacao1, setLocalizacao1] = useState("");
+  const [Loading, setLoading] = useState(false);
 
-  const enviar = async (e) => {
+  const data = [];
+
+  if (result1) {
+    for (let i = 0; i < result1.length; i++) {
+      let regiaoLinha = result1[i].regiao;
+      let notaLinha = Math.round(result1[i].media);
+      data.push({
+        regiao: regiaoLinha,
+        nota: notaLinha,
+      });
+    }
+    console.log(result1);
+    console.log(data);
+  }
+
+  const columns = [
+    {
+      name: "Região",
+      selector: (row) => row.regiao,
+    },
+    {
+      name: "Nota",
+      selector: (row) => row.nota,
+      sortable: true,
+    },
+  ];
+
+  const enviar1 = async (e) => {
     e.preventDefault();
-    if (uf === "") {
-      alert("Selecione a UF");
-    } else if (municipio === "") {
-      alert("Selecione o Municipio");
+    if (nivelEscolaridade1 === "undefined") {
+      alert("Selecione um Nivel de Escolaridade!");
+    } else if (disciplina1 === "undefined") {
+      alert("Selecione uma Disciplina");
     } else {
+      setLoading(true);
       try {
-        const reqResultEscola = await axios.post(
+        const reqResultEscola1 = await axios.post(
           "http://localhost:3000/app/qualidade-ensino",
           {
-            uf: uf,
-            municipio: municipio,
+            nivelEscolaridade: nivelEscolaridade1,
+            disciplina: disciplina1,
+            dependencia: dependencia1,
+            localizacao: localizacao1,
           }
         );
-        setResult(reqResultEscola);
+        setResult1(reqResultEscola1.data);
+        setLoading(false);
       } catch (err) {
+        setResult1(err.response.data);
         console.log(err.response);
+        setLoading(false);
       }
     }
+    setLoading(false);
   };
-
-  const getCities = async () => {
-    // setLoading(true);
-    await api
-      .get(`localidades/estados/${uf}/municipios`)
-      .then((response) => {
-        if (response) {
-          console.log("cidades", response.data);
-          setCities(response.data);
-          // setLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        // setLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    getCities();
-  }, [uf]);
 
   return (
     <div className="geral">
       <label className="titulo">Qualidade de Ensino</label>
 
-      <form onSubmit={enviar}>
+      <form onSubmit={enviar1}>
         <div>
           <label>
-            UF:
-            <select value={uf} onChange={(e) => setUf(e.target.value)}>
+            Nivel Escolar
+            <select
+              value={nivelEscolaridade1}
+              onChange={(e) => setNivelEscolaridade1(e.target.value)}
+            >
               <option value="undefined">Selecione</option>
-              <option value="AC">AC</option>
-              <option value="AL">AL</option>
-              <option value="AM">AM</option>
-              <option value="AP">AP</option>
-              <option value="BA">BA</option>
-              <option value="CE">CE</option>
-              <option value="DF">DF</option>
-              <option value="ES">ES</option>
-              <option value="GO">GO</option>
-              <option value="MA">MA</option>
-              <option value="MG">MG</option>
-              <option value="MS">MS</option>
-              <option value="MT">MT</option>
-              <option value="PA">PA</option>
-              <option value="PB">PB</option>
-              <option value="PE">PE</option>
-              <option value="PI">PI</option>
-              <option value="PR">PR</option>
-              <option value="RJ">RJ</option>
-              <option value="RN">RN</option>
-              <option value="RO">RO</option>
-              <option value="RR">RR</option>
-              <option value="RS">RS</option>
-              <option value="SC">SC</option>
-              <option value="SE">SE</option>
-              <option value="SP">SP</option>
-              <option value="TO">TO</option>
+              <option value="fund_ai">Fundamental 1</option>
+              <option value="fund_af">Fundamental 2</option>
+            </select>
+          </label>
+
+          <label>
+            Disciplina
+            <select
+              value={disciplina1}
+              onChange={(e) => setDisciplina1(e.target.value)}
+            >
+              <option value="undefined">Selecione</option>
+              <option value="PT">Português</option>
+              <option value="MT">Matemática</option>
             </select>
           </label>
           <label>
-            Municipios:
-            <select onChange={(e) => setMunicipio(e.target.value)}>
-              <option value="">Selecione</option>
-              {cities.length >= 0
-                ? cities.map((city) => (
-                    <option key={city.id} value={city.nome}>
-                      {city.nome}
-                    </option>
-                  ))
-                : null}
+            Dependência
+            <select
+              value={dependencia1}
+              onChange={(e) => setDependencia1(e.target.value)}
+            >
+              <option value="undefined">Selecione</option>
+              <option value="Privada">Privada</option>
+              <option value="Estadual">Estadual</option>
+              <option value="Municipal">Municipal</option>
+            </select>
+          </label>
+          <label>
+            Localização
+            <select
+              value={localizacao1}
+              onChange={(e) => setLocalizacao1(e.target.value)}
+            >
+              <option value="undefined">Selecione</option>
+              <option value="Urbana">Urbana</option>
+              <option value="Rural">Rural</option>
             </select>
           </label>
 
@@ -113,221 +140,70 @@ function QualidadeEnsino() {
         </div>
       </form>
 
-      <div className="notasQualidade">
-        {result !== "" ? (
-          <div className="notas">
-            <div className="notasGeral">
-              <label className="subtitulo">Média da UF:</label>
-              <div>
-                <label>
-                  Média Geral de Português - 5° Ano:{" "}
-                  {result.data.uf[0].pt_5ano <= 0 ? "Sem Nota" : Math.round(result.data.uf[0].pt_5ano)}
-                </label>
-              </div>
-              <div>
-                <label>
-                  Média Geral de Matemática - 5° Ano:{" "}
-                  {result.data.uf[0].mt_5ano <= 0 ? "Sem Nota" : Math.round(result.data.uf[0].mt_5ano)}
-                </label>
-              </div>
-              <div>
-                <label>
-                  Média Geral de Português - 9° Ano:{" "}
-                  {result.data.uf[0].pt_9ano <= 0 ? "Sem Nota" : Math.round(result.data.uf[0].pt_9ano)}
-                </label>
-              </div>
-              <div>
-                <label>
-                  Média Geral de Matemática - 9° Ano:{" "}
-                  {result.data.uf[0].mt_9ano <= 0 ? "Sem Nota" : Math.round(result.data.uf[0].mt_9ano)}
-                </label>
-              </div>
-            </div>
+      {result1 ? (
+        <div>
+          <label><strong>Notas por Região</strong></label>
+          <DataTable columns={columns} data={data} />
+          {/* <BarChart
+            width={600}
+            height={400}
+            data={data}
+            margin={{
+              top: 5,
+              right: 30,
+              left: 80,
+              bottom: 5,
+            }}
+            barSize={20}
+          >
+            <XAxis
+              dataKey="regiao"
+              scale="point"
+              padding={{ left: 10, right: 10 }}
+            />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <CartesianGrid strokeDasharray="3 3" />
+            <Bar dataKey="nota" fill="#8884d8" background={{ fill: "#eee" }} />
+          </BarChart> */}
+        </div>
+      ) : null}
 
-            <div className="notasGeral">
-              <br />
-              <label className="subtitulo">Média do Municipio:</label>
-              <div>
-                <label>
-                  Média Geral de Português - 5° Ano:{" "}
-                  {result.data.municipio[0].pt_5ano <= 0 ? "Sem Nota" : Math.round(result.data.municipio[0].pt_5ano)}
-                </label>
-              </div>
-              <div>
-                <label>
-                  Média Geral de Matemática - 5° Ano:{" "}
-                  {result.data.municipio[0].mt_5ano <= 0 ? "Sem Nota" : Math.round(result.data.municipio[0].mt_5ano)}
-                </label>
-              </div>
-              <div>
-                <label>
-                  Média Geral de Português - 9° Ano:{" "}
-                  {result.data.municipio[0].pt_9ano <= 0 ? "Sem Nota" : Math.round(result.data.municipio[0].pt_9ano)}
-                </label>
-              </div>
-              <div>
-                <label>
-                  Média Geral de Matemática - 9° Ano:{" "}
-                  {result.data.municipio[0].mt_9ano <= 0 ? "Sem Nota" : Math.round(result.data.municipio[0].mt_9ano)}
-                </label>
-              </div>
-            </div>
-
-            <div className="notasGeral">
-              <br />
-              <label className="subtitulo">Média da Localidade Urbana:</label>
-              <div>
-                <label>
-                  Média Geral de Português - 5° Ano:{" "}
-                  {result.data.urbana[0].pt_5ano <= 0 ? "Sem Nota" : Math.round(result.data.urbana[0].pt_5ano)}
-                </label>
-              </div>
-              <div>
-                <label>
-                  Média Geral de Matemática - 5° Ano:{" "}
-                  {result.data.urbana[0].mt_5ano <= 0 ? "Sem Nota" : Math.round(result.data.urbana[0].mt_5ano)}
-                </label>
-              </div>
-              <div>
-                <label>
-                  Média Geral de Português - 9° Ano:{" "}
-                  {result.data.urbana[0].pt_9ano <= 0 ? "Sem Nota" : Math.round(result.data.urbana[0].pt_9ano)}
-                </label>
-              </div>
-              <div>
-                <label>
-                  Média Geral de Matemática - 9° Ano:{" "}
-                  {result.data.urbana[0].mt_9ano <= 0 ? "Sem Nota" : Math.round(result.data.urbana[0].mt_9ano)}
-                </label>
-              </div>
-            </div>
-
-            <div className="notasGeral">
-              <br />
-              <label className="subtitulo">Média da Localidade Rural:</label>
-              <div>
-                <label>
-                  Média Geral de Português - 5° Ano:{" "}
-                  {result.data.rural[0].pt_5ano <= 0 ? "Sem Nota" : Math.round(result.data.rural[0].pt_5ano)}
-                </label>
-              </div>
-              <div>
-                <label>
-                  Média Geral de Matemática - 5° Ano:{" "}
-                  {result.data.rural[0].mt_5ano <= 0 ? "Sem Nota" : Math.round(result.data.rural[0].mt_5ano)}
-                </label>
-              </div>
-              <div>
-                <label>
-                  Média Geral de Português - 9° Ano:{" "}
-                  {result.data.rural[0].pt_9ano <= 0 ? "Sem Nota" : Math.round(result.data.rural[0].pt_9ano)}
-                </label>
-              </div>
-              <div>
-                <label>
-                  Média Geral de Matemática - 9° Ano:{" "}
-                  {result.data.rural[0].mt_9ano <= 0 ? "Sem Nota" : Math.round(result.data.rural[0].mt_9ano)}
-                </label>
-              </div>
-            </div>
-
-            <div className="notasGeral">
-              <br />
-              <label className="subtitulo">
-                Média Geral das Escolas Estaduais:
-              </label>
-              <div>
-                <label>
-                  Média Geral de Português - 5° Ano:{" "}
-                  {result.data.estadual[0].pt_5ano <= 0 ? "Sem Nota" : Math.round(result.data.estadual[0].pt_5ano)}
-                </label>
-              </div>
-              <div>
-                <label>
-                  Média Geral de Matemática - 5° Ano:{" "}
-                  {result.data.estadual[0].mt_5ano <= 0 ? "Sem Nota" : Math.round(result.data.estadual[0].mt_5ano)}
-                </label>
-              </div>
-              <div>
-                <label>
-                  Média Geral de Português - 9° Ano:{" "}
-                  {result.data.estadual[0].pt_9ano <= 0 ? "Sem Nota" : Math.round(result.data.estadual[0].pt_9ano)}
-                </label>
-              </div>
-              <div>
-                <label>
-                  Média Geral de Matemática - 9° Ano:{" "}
-                  {result.data.estadual[0].mt_9ano <= 0 ? "Sem Nota" : Math.round(result.data.estadual[0].mt_9ano)}
-                </label>
-              </div>
-            </div>
-
-            <div className="notasGeral">
-              <br />
-              <label className="subtitulo">
-                Média Geral das Escolas Municipais:
-              </label>
-              <div>
-                <label>
-                  Média Geral de Português - 5° Ano:{" "}
-                  {result.data.municipal[0].pt_5ano <= 0 ? "Sem Nota" : Math.round(result.data.municipal[0].pt_5ano)}
-                </label>
-              </div>
-              <div>
-                <label>
-                  Média Geral de Matemática - 5° Ano:{" "}
-                  {result.data.municipal[0].mt_5ano <= 0 ? "Sem Nota" : Math.round(result.data.municipal[0].mt_5ano)}
-                </label>
-              </div>
-              <div>
-                <label>
-                  Média Geral de Português - 9° Ano:{" "}
-                  {result.data.municipal[0].pt_9ano <= 0 ? "Sem Nota" : Math.round(result.data.municipal[0].pt_9ano)}
-                </label>
-              </div>
-              <div>
-                <label>
-                  Média Geral de Matemática - 9° Ano:{" "}
-                  {result.data.municipal[0].mt_9ano <= 0 ? "Sem Nota" : Math.round(result.data.municipal[0].mt_9ano)}
-                </label>
-              </div>
-            </div>
-
-            <div className="notasGeral">
-              <br />
-              <label className="subtitulo">
-                Média Geral das Escolas Privadas:
-              </label>
-              <div>
-                <label>
-                  Média Geral de Português - 5° Ano:{" "}
-                  {result.data.privada[0].pt_5ano <= 0 ? "Sem Nota" : Math.round(result.data.privada[0].pt_5ano)}
-                </label>
-              </div>
-              <div>
-                <label>
-                  Média Geral de Matemática - 5° Ano:{" "}
-                  {result.data.privada[0].mt_5ano <= 0 ? "Sem Nota" : Math.round(result.data.privada[0].mt_5ano)}
-                </label>
-              </div>
-              <div>
-                <label>
-                  Média Geral de Português - 9° Ano:{" "}
-                  {result.data.privada[0].pt_9ano <= 0 ? "Sem Nota" : Math.round(result.data.privada[0].pt_9ano)}
-                </label>
-              </div>
-              <div>
-                <label>
-                  Média Geral de Matemática - 9° Ano:{" "}
-                  {result.data.privada[0].mt_9ano <= 0 ? "Sem Nota" : Math.round(result.data.privada[0].mt_9ano)}
-                </label>
-              </div>
-            </div>
-          </div>
-        ) : (
-          ""
-        )}
-      </div>
+      {/* {result2 ? (
+        <div>
+          <Table>
+            <thead>
+              <tr>
+                <th>Região</th>
+                <th>Nota</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{result2[0].regiao}</td>
+                <td>{result2[0].media}</td>
+              </tr>
+              <tr>
+                <td>{result2[1].regiao}</td>
+                <td>{result2[1].media}</td>
+              </tr>
+              <tr>
+                <td>{result2[2].regiao}</td>
+                <td>{result2[2].media}</td>
+              </tr>
+              <tr>
+                <td>{result2[3].regiao}</td>
+                <td>{result2[3].media}</td>
+              </tr>
+              <tr>
+                <td>{result2[4].regiao}</td>
+                <td>{result2[4].media}</td>
+              </tr>
+            </tbody>
+          </Table>
+        </div>
+      ) : null} */}
     </div>
   );
 }

@@ -171,22 +171,22 @@ function Details() {
               <tr>
                 <td>5º ano</td>
                 <td>Português</td>
-                <td>{element.pt_5ano > 0 ? element.pt_5ano : "Sem Nota"}</td>
+                <td>{element.pt_5ano > 0 ? Math.round(element.pt_5ano) : "Sem Nota"}</td>
               </tr>
               <tr>
                 <td>5º ano</td>
                 <td>Matemática</td>
-                <td>{element.mt_5ano > 0 ? element.mt_5ano : "Sem Nota"}</td>
+                <td>{element.mt_5ano > 0 ? Math.round(element.mt_5ano) : "Sem Nota"}</td>
               </tr>
               <tr>
                 <td>9º ano</td>
                 <td>Português</td>
-                <td>{element.pt_9ano > 0 ? element.pt_9ano : "Sem Nota"}</td>
+                <td>{element.pt_9ano > 0 ? Math.round(element.pt_9ano) : "Sem Nota"}</td>
               </tr>
               <tr>
                 <td>9º ano</td>
                 <td>Matemática</td>
-                <td>{element.mt_9ano > 0 ? element.mt_9ano : "Sem Nota"}</td>
+                <td>{element.mt_9ano > 0 ? Math.round(element.mt_9ano) : "Sem Nota"}</td>
               </tr>
             </tbody>
           </Table>

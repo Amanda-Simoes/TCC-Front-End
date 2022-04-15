@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Card, ListGroup, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../Style/style.css";
+import image from "../../../assets/loading.gif";
 
 import BootstrapSelect from "react-bootstrap-select-dropdown";
 
@@ -12,13 +13,14 @@ function Comparacao() {
   const [escola1, setEscola1] = useState("");
   const [escola2, setEscola2] = useState("");
   const [escolas, setEscolas] = useState([]);
-  // const [aux, setAux] = useState(false);
+  const [Loading, setLoading] = useState(false);
 
   const enviar = async (e) => {
     e.preventDefault();
     if (escola1 === "" || escola2 === "") {
       alert("Informe duas escolas");
     } else {
+      setLoading(true);
       try {
         const reqResultEscola1 = await axios.post(
           "http://localhost:3000/app/comparacao",
@@ -35,44 +37,14 @@ function Comparacao() {
           }
         );
         setResult2(reqResultEscola2);
+        setLoading(false);
       } catch (err) {
         console.log(err.response);
+        setLoading(false);
       }
     }
+    setLoading(false);
   };
-
-  // let data = [];
-  // let options = [];
-
-  // useEffect(() => {
-  // const listagemEscola = async () => {
-  //   const url = "http://localhost:3000/app/escolasComboComparacao";
-  //   try {
-  //     const todasEscolas = await axios.post(url);
-  //     setEscolas(todasEscolas.data);
-
-  //     for (let i = 0; i < todasEscolas.data.length; i++) {
-  //       // eslint-disable-next-line react-hooks/exhaustive-deps
-  //       data = [
-  //         {
-  //           value: todasEscolas.data[i].nome_escola,
-  //           label: todasEscolas.data[i].nome_escola,
-  //         },
-  //       ];
-  //       options.push(...data);
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-  //   listagemEscola();
-  // }, [aux]);
-
-  // setAux(true)
-
-  // const selectEscola = (escola) => {
-  //   setEscola1(escola.selectedValue);
-  // };
 
   return (
     <div className="conteudoFiltro">
@@ -108,7 +80,11 @@ function Comparacao() {
         </form>
       </div>
 
-      {result1 && result2 ? (
+      {Loading ? (
+        <div className="imgLoading">
+          <img src={image} />
+        </div>
+      ) : (
         <div className="escolas">
           <div className="escolaComparacao">
             {result1 !== "" ? (
@@ -161,13 +137,17 @@ function Comparacao() {
                       <label>Nota de Português 5º ano: {element.pt_5ano}</label>
                     </div>
                     <div>
-                      <label>Nota de Matemática 5º ano: {element.pt_9ano}</label>
+                      <label>
+                        Nota de Matemática 5º ano: {element.pt_9ano}
+                      </label>
                     </div>
                     <div>
                       <label>Nota de Português 9º ano: {element.mt_5ano}</label>
                     </div>
                     <div>
-                      <label>Nota de Matemática 9º ano: {element.mt_9ano}</label>
+                      <label>
+                        Nota de Matemática 9º ano: {element.mt_9ano}
+                      </label>
                     </div>
                   </div>
                 ))}
@@ -242,7 +222,7 @@ function Comparacao() {
             )}
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 }

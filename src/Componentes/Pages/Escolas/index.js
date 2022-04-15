@@ -5,9 +5,11 @@ import { Card, Row, Col, ListGroup, Button, Container } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../Style/style.css";
 import api from "../../../service/api";
+import image from "../../../assets/loading.gif";
+import DataTable from "react-data-table-component";
 
 function Escolas() {
-  const [result, setResult] = useState([]);
+  const [result, setResult] = useState();
   const [escola, setEscola] = useState("");
   const [uf, setUf] = useState();
   const [fund_ai, setFund_ai] = useState(true);
@@ -18,9 +20,47 @@ function Escolas() {
   const [edu_indigena, setEduIndigena] = useState(false);
   const [cities, setCities] = useState([]);
   const [municipio, setMunicipio] = useState("");
+  const [Loading, setLoading] = useState(false);
+
+  const data = [];
+
+  if (result) {
+    for (let i = 0; i < result.length; i++) {
+      let nomeLinha = result[i].nome_escola;
+      let cod_escola = result[i].cod_escola;
+      let municipioLinha = result[i].municipio;
+      let ufLinha = result[i].uf;
+      data.push({
+        escola: nomeLinha,
+        cod: cod_escola,
+        municipio: municipioLinha,
+        uf: ufLinha,
+      });
+    }
+  }
+
+  const columns = [
+    {
+      name: "Escola",
+      selector: (row) => <Link to={"/detalhe/" + row.cod}>{row.escola}</Link>,
+      sortable: true,
+      width: "50%",
+    },
+    {
+      name: "Municipio",
+      selector: (row) => row.municipio,
+      sortable: true,
+    },
+    {
+      name: "UF",
+      selector: (row) => row.uf,
+      sortable: true,
+    },
+  ];
 
   const enviar = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const reqResult = await axios.post("http://localhost:3000/app/escolas", {
         escola: escola,
@@ -33,28 +73,27 @@ function Escolas() {
         acessibilidade: acessibilidade,
         edu_indigena: edu_indigena,
       });
-      console.log(reqResult);
       setResult(reqResult.data);
+      setLoading(false);
     } catch (err) {
       setResult(err.response.data);
       console.log(err.response);
+      setLoading(false);
     }
+    setLoading(false);
   };
 
   const getCities = async () => {
-    // setLoading(true);
     await api
       .get(`localidades/estados/${uf}/municipios`)
       .then((response) => {
         if (response) {
           console.log("cidades", response.data);
           setCities(response.data);
-          // setLoading(false);
         }
       })
       .catch((error) => {
         console.log(error);
-        // setLoading(false);
       });
   };
 
@@ -193,20 +232,14 @@ function Escolas() {
         </form>
       </div>
 
-      <div class="resultado">
-        {typeof result === "string"
-          ? result
-          : result.map((element) => (
-              <div>
-                <div>
-                  <Link to={"/detalhe/" + element.cod_escola}>
-                    {element.nome_escola}
-                  </Link>{" "}
-                  {element.municipio} - {element.uf}
-                </div>
-              </div>
-            ))}
-      </div>
+      {Loading ? (
+        <div className="imgLoading">
+          <img src={image} />
+        </div>
+      ) : null}
+      {result ? (
+        <DataTable columns={columns} data={data} pagination="true" />
+      ) : null}
     </div>
   );
 }
