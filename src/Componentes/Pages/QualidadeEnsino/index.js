@@ -26,24 +26,127 @@ function QualidadeEnsino() {
   const [Loading, setLoading] = useState(false);
 
   const data = [];
+  const dataNordeste = [];
+  const dataSul = [];
+  const dataSudeste = [];
+  const dataNorte = [];
+  const dataCentroOeste = [];
 
   if (result1) {
-    for (let i = 0; i < result1.length; i++) {
-      let regiaoLinha = result1[i].regiao;
-      let notaLinha = Math.round(result1[i].media);
+    for (let i = 0; i < result1.regiao.length; i++) {
+      let regiaoLinha = result1.regiao[i].regiao;
+      let notaLinha = Math.round(result1.regiao[i].media);
       data.push({
         regiao: regiaoLinha,
         nota: notaLinha,
       });
     }
-    console.log(result1);
-    console.log(data);
+    for (let i = 0; i < result1.nordeste.length; i++) {
+      let ufLinha = result1.nordeste[i].uf;
+      let notaLinha = Math.round(result1.nordeste[i].media);
+      dataNordeste.push({
+        uf: ufLinha,
+        nota: notaLinha,
+      });
+    }
+    for (let i = 0; i < result1.sul.length; i++) {
+      let ufLinha = result1.sul[i].uf;
+      let notaLinha = Math.round(result1.sul[i].media);
+      dataSul.push({
+        uf: ufLinha,
+        nota: notaLinha,
+      });
+    }
+    for (let i = 0; i < result1.sudeste.length; i++) {
+      let ufLinha = result1.sudeste[i].uf;
+      let notaLinha = Math.round(result1.sudeste[i].media);
+      dataSudeste.push({
+        uf: ufLinha,
+        nota: notaLinha,
+      });
+    }
+    for (let i = 0; i < result1.norte.length; i++) {
+      let ufLinha = result1.norte[i].uf;
+      let notaLinha = Math.round(result1.norte[i].media);
+      dataNorte.push({
+        uf: ufLinha,
+        nota: notaLinha,
+      });
+    }
+    for (let i = 0; i < result1.centroOeste.length; i++) {
+      let ufLinha = result1.centroOeste[i].uf;
+      let notaLinha = Math.round(result1.centroOeste[i].media);
+      dataCentroOeste.push({
+        uf: ufLinha,
+        nota: notaLinha,
+      });
+    }
   }
 
   const columns = [
     {
       name: "Região",
       selector: (row) => row.regiao,
+    },
+    {
+      name: "Nota",
+      selector: (row) => row.nota,
+      sortable: true,
+    },
+  ];
+
+  const columnsNordeste = [
+    {
+      name: "UF",
+      selector: (row) => row.uf,
+    },
+    {
+      name: "Nota",
+      selector: (row) => row.nota,
+      sortable: true,
+    },
+  ];
+
+  const columnsNorte = [
+    {
+      name: "UF",
+      selector: (row) => row.uf,
+    },
+    {
+      name: "Nota",
+      selector: (row) => row.nota,
+      sortable: true,
+    },
+  ];
+
+  const columnsSul = [
+    {
+      name: "UF",
+      selector: (row) => row.uf,
+    },
+    {
+      name: "Nota",
+      selector: (row) => row.nota,
+      sortable: true,
+    },
+  ];
+
+  const columnsSudeste = [
+    {
+      name: "UF",
+      selector: (row) => row.uf,
+    },
+    {
+      name: "Nota",
+      selector: (row) => row.nota,
+      sortable: true,
+    },
+  ];
+
+  const columnsCentroOeste = [
+    {
+      name: "UF",
+      selector: (row) => row.uf,
     },
     {
       name: "Nota",
@@ -71,7 +174,7 @@ function QualidadeEnsino() {
           }
         );
         setResult1(reqResultEscola1.data);
-        setLoading(false);
+        // console.log(result1)
       } catch (err) {
         setResult1(err.response.data);
         console.log(err.response);
@@ -142,8 +245,42 @@ function QualidadeEnsino() {
 
       {result1 ? (
         <div>
-          <label><strong>Notas por Região</strong></label>
-          <DataTable columns={columns} data={data} />
+          <div>
+            <label>
+              <strong>Notas por Região</strong>
+            </label>
+            <DataTable columns={columns} data={data} />
+          </div>
+          <div>
+            <label>
+              <strong>Notas da Região Nordeste</strong>
+            </label>
+            <DataTable columns={columnsNordeste} data={dataNordeste} />
+          </div>
+          <div>
+            <label>
+              <strong>Notas da Região Norte</strong>
+            </label>
+            <DataTable columns={columnsNorte} data={dataNorte} />
+          </div>
+          <div>
+            <label>
+              <strong>Notas da Região Sul</strong>
+            </label>
+            <DataTable columns={columnsSul} data={dataSul} />
+          </div>
+          <div>
+            <label>
+              <strong>Notas da Região Sudeste</strong>
+            </label>
+            <DataTable columns={columnsSudeste} data={dataSudeste} />
+          </div>
+          <div>
+            <label>
+              <strong>Notas da Região Centro Oeste</strong>
+            </label>
+            <DataTable columns={columnsCentroOeste} data={dataCentroOeste} />
+          </div>
           {/* <BarChart
             width={600}
             height={400}
@@ -169,41 +306,6 @@ function QualidadeEnsino() {
           </BarChart> */}
         </div>
       ) : null}
-
-      {/* {result2 ? (
-        <div>
-          <Table>
-            <thead>
-              <tr>
-                <th>Região</th>
-                <th>Nota</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{result2[0].regiao}</td>
-                <td>{result2[0].media}</td>
-              </tr>
-              <tr>
-                <td>{result2[1].regiao}</td>
-                <td>{result2[1].media}</td>
-              </tr>
-              <tr>
-                <td>{result2[2].regiao}</td>
-                <td>{result2[2].media}</td>
-              </tr>
-              <tr>
-                <td>{result2[3].regiao}</td>
-                <td>{result2[3].media}</td>
-              </tr>
-              <tr>
-                <td>{result2[4].regiao}</td>
-                <td>{result2[4].media}</td>
-              </tr>
-            </tbody>
-          </Table>
-        </div>
-      ) : null} */}
     </div>
   );
 }
