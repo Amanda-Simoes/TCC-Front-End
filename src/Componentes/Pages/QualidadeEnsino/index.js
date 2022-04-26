@@ -243,7 +243,13 @@ function QualidadeEnsino() {
         </div>
       </form>
 
-      {result1 ? (
+      {Loading ? (
+        <div className="imgLoading">
+          <img src={image} />
+        </div>
+      ) : null}
+
+      {result1 && Loading === false ? (
         <div>
           <div>
             <label>
@@ -281,29 +287,6 @@ function QualidadeEnsino() {
             </label>
             <DataTable columns={columnsCentroOeste} data={dataCentroOeste} />
           </div>
-          {/* <BarChart
-            width={600}
-            height={400}
-            data={data}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 80,
-              bottom: 5,
-            }}
-            barSize={20}
-          >
-            <XAxis
-              dataKey="regiao"
-              scale="point"
-              padding={{ left: 10, right: 10 }}
-            />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <CartesianGrid strokeDasharray="3 3" />
-            <Bar dataKey="nota" fill="#8884d8" background={{ fill: "#eee" }} />
-          </BarChart> */}
         </div>
       ) : null}
     </div>

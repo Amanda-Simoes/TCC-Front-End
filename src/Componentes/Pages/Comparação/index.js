@@ -84,7 +84,9 @@ function Comparacao() {
         <div className="imgLoading">
           <img src={image} />
         </div>
-      ) : (
+      ) : null}
+
+      {result1 && result2 && Loading === false ? (
         <div className="escolas">
           <div className="escolaComparacao">
             {result1 !== "" ? (
@@ -222,7 +224,7 @@ function Comparacao() {
             )}
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

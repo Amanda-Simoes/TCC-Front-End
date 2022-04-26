@@ -237,7 +237,7 @@ function Escolas() {
           <img src={image} />
         </div>
       ) : null}
-      {result ? (
+      {result && Loading === false ? (
         <DataTable columns={columns} data={data} pagination="true" />
       ) : null}
     </div>
