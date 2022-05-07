@@ -160,7 +160,7 @@ function Escolas() {
 
             <label>
               {" "}
-              Municipios:
+              Municipio:
               <select onChange={(e) => setMunicipio(e.target.value)}>
                 <option value="undefined">Selecione</option>
                 {cities.length >= 0
@@ -175,7 +175,7 @@ function Escolas() {
 
             <label>
               {" "}
-              Dependencias:
+              Dependencia:
               <select
                 value={dependencia}
                 onChange={(e) => setDependencia(e.target.value)}

@@ -13,9 +13,6 @@ function NavbarTela() {
     <Navbar id="navbar" dark expand="md">
         <NavbarBrand><h4>GuiaEduKids</h4></NavbarBrand>
         <Nav className="navContent" navbar>
-          {/* <Link to='/escolas'>
-             <img src={logo} alt="GuiaEduKids" width="150px"/>
-        </Link> */}
           <NavItem>
             <NavLink>
               <Link to="/escolas" class="item">

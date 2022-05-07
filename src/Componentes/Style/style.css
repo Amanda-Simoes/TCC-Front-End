@@ -38,15 +38,8 @@ select {
 
 #button {
   cursor: pointer;
-  background-color: #757bc8;
+  background-color: #6f1abd;
 }
-
-/* form {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-} */
 
 .filtroEscolas {
   width: 100%;
@@ -122,11 +115,6 @@ select {
   font-weight: bold;
 }
 
-.table {
-  margin-top: 5%;
-  width: 50%;
-}
-
 img {
   width: 300px;
 }
@@ -143,4 +131,26 @@ img {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+}
+
+.mapa {
+  display: flex;
+}
+
+.mapaSpace {
+  margin-left: 20px;
+}
+
+.infosDetalhe {
+  display: flex;
+  border-radius: 4px;
+  border: solid 1px #e0e0e0;
+}
+
+.info {
+  margin-left: 50px;
+}
+
+.tablesQualidade {
+  width: 80%;
 }

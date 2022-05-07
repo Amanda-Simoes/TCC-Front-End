@@ -250,45 +250,73 @@ function QualidadeEnsino() {
       ) : null}
 
       {result1 && Loading === false ? (
-        <div>
+        <div className="tablesQualidade">
+          <br></br>
           <div>
             <label>
               <strong>Notas por Região</strong>
             </label>
             <DataTable columns={columns} data={data} />
           </div>
-          <div>
-            <label>
-              <strong>Notas da Região Nordeste</strong>
-            </label>
-            <DataTable columns={columnsNordeste} data={dataNordeste} />
-          </div>
-          <div>
-            <label>
-              <strong>Notas da Região Norte</strong>
-            </label>
-            <DataTable columns={columnsNorte} data={dataNorte} />
-          </div>
-          <div>
-            <label>
-              <strong>Notas da Região Sul</strong>
-            </label>
-            <DataTable columns={columnsSul} data={dataSul} />
-          </div>
-          <div>
-            <label>
-              <strong>Notas da Região Sudeste</strong>
-            </label>
-            <DataTable columns={columnsSudeste} data={dataSudeste} />
-          </div>
-          <div>
-            <label>
-              <strong>Notas da Região Centro Oeste</strong>
-            </label>
-            <DataTable columns={columnsCentroOeste} data={dataCentroOeste} />
-          </div>
+
+          <br></br>
+
+          {dataNordeste.length > 0 ? (
+            <div>
+              <label>
+                <strong>Notas da Região Nordeste</strong>
+              </label>
+              <DataTable columns={columnsNordeste} data={dataNordeste} />
+            </div>
+          ) : null}
+
+          <br></br>
+
+          {dataNorte.length > 0 ? (
+            <div>
+              <label>
+                <strong>Notas da Região Norte</strong>
+              </label>
+              <DataTable columns={columnsNorte} data={dataNorte} />
+            </div>
+          ) : null}
+
+          <br></br>
+
+          {dataSul.length > 0 ? (
+            <div>
+              <label>
+                <strong>Notas da Região Sul</strong>
+              </label>
+              <DataTable columns={columnsSul} data={dataSul} />
+            </div>
+          ) : null}
+
+          <br></br>
+
+          {dataSudeste.length > 0 ? (
+            <div>
+              <label>
+                <strong>Notas da Região Sudeste</strong>
+              </label>
+              <DataTable columns={columnsSudeste} data={dataSudeste} />
+            </div>
+          ) : null}
+
+          <br></br>
+
+          {dataCentroOeste.length > 0 ? (
+            <div>
+              <label>
+                <strong>Notas da Região Centro Oeste</strong>
+              </label>
+              <DataTable columns={columnsCentroOeste} data={dataCentroOeste} />
+            </div>
+          ) : null}
         </div>
       ) : null}
+      <br></br>
+      <br></br>
     </div>
   );
 }

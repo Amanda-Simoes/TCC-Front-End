@@ -92,46 +92,30 @@ function Comparacao() {
             {result1 !== "" ? (
               <div>
                 <div>
-                  <label>{result1.data.escola[0].nome_escola}</label>
+                  <label><strong>{result1.data.escola[0].nome_escola}</strong></label>
                 </div>
+                <br></br>
                 <div>
-                  <label>{result1.data.escola[0].uf}</label>
-                </div>
-                <div>
-                  <label>{result1.data.escola[0].municipio}</label>
-                </div>
-                <div>
-                  <label>{result1.data.escola[0].endereco}</label>
-                </div>
-                <div>
-                  <label>{result1.data.escola[0].funcionamento}</label>
+                  <label><strong>Endereço: </strong>{result1.data.escola[0].endereco}</label>
                 </div>
                 <div>
                   <label>
+                    <strong>Localização: </strong>
                     {result1.data.escola[0].localizacao === 1
                       ? "Urbana"
                       : "Rural"}
                   </label>
                 </div>
                 <div>
-                  <label>
-                    {result1.data.escola[0].ensino_fund_ai === "1"
-                      ? "Ensino Fundamental 1"
-                      : "Não possui Ensino Fundamental 1"}
-                  </label>
+                  <label><strong>Situação: </strong>{result1.data.escola[0].funcionamento}</label>
                 </div>
-                <div>
-                  <label>
-                    {result1.data.escola[0].ensino_fund_af === "1"
-                      ? "Ensino Fundamental 2"
-                      : "Não possui Ensino Fundamental 2"}
-                  </label>
-                </div>
+                <br></br>
+                {result1.data.notas ? (
+                  <label><strong>Notas</strong></label>
+                ) : null}
                 {result1.data.notas.map((element) => (
                   <div>
-                    <div>
-                      <label>Notas</label>
-                    </div>
+                    <br></br>
                     <div>
                       <label>Ano do Saeb: {element.id_saeb}</label>
                     </div>
@@ -163,58 +147,43 @@ function Comparacao() {
             {result2 !== "" ? (
               <div>
                 <div>
-                  <label>{result2.data.escola[0].nome_escola}</label>
+                  <label><strong>{result2.data.escola[0].nome_escola}</strong></label>
                 </div>
+                <br></br>
                 <div>
-                  <label>{result2.data.escola[0].uf}</label>
-                </div>
-                <label>{result2.data.escola[0].municipio}</label>
-                <div>
-                  <label>{result2.data.escola[0].endereco}</label>
-                </div>
-                <div>
-                  <label>{result2.data.escola[0].funcionamento}</label>
+                  <label><strong>Endereço: </strong>{result2.data.escola[0].endereco}</label>
                 </div>
                 <div>
                   <label>
-                    {result2.data.escola[0].localizacao === 1
+                  <strong>Localização: </strong>{result2.data.escola[0].localizacao === 1
                       ? "Urbana"
                       : "Rural"}
                   </label>
                 </div>
                 <div>
-                  <label>
-                    {result2.data.escola[0].fund_ai === 1
-                      ? "Ensino Fundamental 1"
-                      : "Não possui Ensino Fundamental 1"}
-                  </label>
+                  <label><strong>Situação: </strong>{result2.data.escola[0].funcionamento}</label>
                 </div>
-                <div>
-                  <label>
-                    {result2.data.escola[0].fund_af === 1
-                      ? "Ensino Fundamental 2"
-                      : "Não possui Ensino Fundamental 2"}
-                  </label>
-                </div>
+                <br></br>
+                {result2.data.notas ? (
+                  <label><strong>Notas</strong></label>
+                ) : null}
                 {result2.data.notas.map((element) => (
                   <div>
-                    <div>
-                      <label>Notas</label>
-                    </div>
+                    <br></br>
                     <div>
                       <label>Ano do Saeb: {element.id_saeb}</label>
                     </div>
                     <div>
-                      <label>Nota de Português 5º ano:{element.pt_5ano}</label>
+                      <label>Nota de Português 5º ano: {element.pt_5ano}</label>
                     </div>
                     <div>
-                      <label>Nota de Matemática 5º ano:{element.pt_9ano}</label>
+                      <label>Nota de Matemática 5º ano: {element.pt_9ano}</label>
                     </div>
                     <div>
-                      <label>Nota de Português 9º ano:{element.mt_5ano}</label>
+                      <label>Nota de Português 9º ano: {element.mt_5ano}</label>
                     </div>
                     <div>
-                      <label>Nota de Matemática 9º ano:{element.mt_9ano}</label>
+                      <label>Nota de Matemática 9º ano: {element.mt_9ano}</label>
                     </div>
                   </div>
                 ))}
@@ -225,6 +194,8 @@ function Comparacao() {
           </div>
         </div>
       ) : null}
+      <br></br>
+      <br></br>
     </div>
   );
 }
